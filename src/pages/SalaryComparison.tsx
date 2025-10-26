@@ -5,7 +5,6 @@ import { predictionService } from '../services/predictionService';
 import { formatCurrency } from '../utils/calculations';
 import { normalizeRoleName } from '../utils/stringUtils';
 import { Button } from '../components/Common/Button';
-import { Input } from '../components/Common/Input';
 
 export const SalaryComparison: React.FC = () => {
   const { salaries, loading } = useSalaryData();

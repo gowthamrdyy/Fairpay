@@ -23,7 +23,7 @@ interface SalaryFormProps {
 }
 
 export const SalaryForm: React.FC<SalaryFormProps> = ({ onSuccess }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<SalaryFormData>();
+  const { register, handleSubmit } = useForm<SalaryFormData>();
   const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);

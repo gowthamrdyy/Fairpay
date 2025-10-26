@@ -7,7 +7,6 @@ const EXCHANGERATE_BASE_URL = 'https://api.exchangerate-api.com/v4/latest';
 
 const fredApiKey = import.meta.env.VITE_FRED_API_KEY;
 const alphaVantageApiKey = import.meta.env.VITE_ALPHA_VANTAGE_API_KEY;
-const exchangeRateApiKey = import.meta.env.VITE_EXCHANGERATE_API_KEY;
 
 export const economicDataService = {
   async getInflationRate(): Promise<EconomicTrend[]> {

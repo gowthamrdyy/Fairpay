@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Brain, Target, Sparkles, Building2, Rocket, BarChart3, TrendingUp, Shield, Zap } from 'lucide-react';
-import { Button } from '../components/Common/Button';
 
 export const Home: React.FC = () => {
   return (
