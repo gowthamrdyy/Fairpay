@@ -25,15 +25,35 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+// Initialize Firebase only if config is valid
+let app: any = null;
+let db: any = null;
+let auth: any = null;
 
-console.log('Firebase initialized successfully');
+try {
+  // Check if Firebase config is properly set
+  if (firebaseConfig.apiKey && firebaseConfig.projectId && 
+      !firebaseConfig.apiKey.includes('your-') && 
+      firebaseConfig.apiKey.length > 20) {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    console.log('Firebase initialized successfully');
+  } else {
+    console.warn('Firebase config not set - running in offline mode');
+  }
+} catch (error) {
+  console.error('Firebase initialization failed - running in offline mode:', error);
+}
+
+export { db, auth };
 
 export const firestoreService = {
   async addDocument(collectionName: string, data: any) {
+    if (!db) {
+      console.warn('Firebase not initialized - document not saved');
+      return 'offline-' + Date.now();
+    }
     try {
       const docRef = await addDoc(collection(db, collectionName), {
         ...data,
@@ -48,6 +68,10 @@ export const firestoreService = {
   },
 
   async getDocuments(collectionName: string) {
+    if (!db) {
+      console.warn('Firebase not initialized - returning empty array');
+      return [];
+    }
     try {
       const querySnapshot = await getDocs(collection(db, collectionName));
       const documents: any[] = [];
@@ -65,6 +89,10 @@ export const firestoreService = {
     collectionName: string,
     constraints: QueryConstraint[]
   ) {
+    if (!db) {
+      console.warn('Firebase not initialized - returning empty array');
+      return [];
+    }
     try {
       const q = query(collection(db, collectionName), ...constraints);
       const querySnapshot = await getDocs(q);
@@ -80,6 +108,10 @@ export const firestoreService = {
   },
 
   async updateDocument(collectionName: string, docId: string, data: any) {
+    if (!db) {
+      console.warn('Firebase not initialized - document not updated');
+      return;
+    }
     try {
       const docRef = doc(db, collectionName, docId);
       await updateDoc(docRef, {
@@ -94,6 +126,10 @@ export const firestoreService = {
   },
 
   async deleteDocument(collectionName: string, docId: string) {
+    if (!db) {
+      console.warn('Firebase not initialized - document not deleted');
+      return;
+    }
     try {
       await deleteDoc(doc(db, collectionName, docId));
       console.log('Document deleted:', docId);
