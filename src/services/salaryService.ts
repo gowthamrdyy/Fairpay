@@ -1,12 +1,22 @@
-import { firestoreService } from './firebase';
 import type { SalaryEntry, SalaryStats, WageGap } from '../types/salary';
 import { companyNameIncludes, normalizeRoleName, normalizeLocationName } from '../utils/stringUtils';
+import indiaSalaryData from '../data/india_salary_data.json';
+
+// Local storage for any new entries added by users
+let localSalaries: SalaryEntry[] = [];
 
 export const salaryService = {
   async addSalary(salaryData: Partial<SalaryEntry>): Promise<string> {
     try {
-      const id = await firestoreService.addDocument('salaries', salaryData);
-      return id;
+      const newEntry: SalaryEntry = {
+        id: 'local-' + Date.now(),
+        ...salaryData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as SalaryEntry;
+      localSalaries.push(newEntry);
+      console.log('Salary added locally:', newEntry.id);
+      return newEntry.id;
     } catch (error) {
       console.error('Error adding salary:', error);
       throw error;
@@ -15,13 +25,9 @@ export const salaryService = {
 
   async getAllSalaries(): Promise<SalaryEntry[]> {
     try {
-      const documents = await firestoreService.getDocuments('salaries');
-      return documents.map((doc) => ({
-        ...doc,
-        startDate: doc.startDate?.toDate ? doc.startDate.toDate() : new Date(doc.startDate),
-        createdAt: doc.createdAt?.toDate ? doc.createdAt.toDate() : new Date(doc.createdAt),
-        updatedAt: doc.updatedAt?.toDate ? doc.updatedAt.toDate() : new Date(doc.updatedAt),
-      })) as SalaryEntry[];
+      // Combine JSON data with any locally added entries
+      const allData = [...(indiaSalaryData as SalaryEntry[]), ...localSalaries];
+      return allData;
     } catch (error) {
       console.error('Error getting salaries:', error);
       return [];

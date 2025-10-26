@@ -35,19 +35,19 @@ export const EconomicInsights: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <p className="text-gray-600">Loading economic insights...</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <p className="text-gray-600 dark:text-gray-400">Loading economic insights...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           Economic Insights
         </h1>
-        <p className="text-xl text-gray-600 mb-8">
+        <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
           Understand how economic indicators impact salary trends and negotiations
         </p>
 
@@ -77,21 +77,21 @@ export const EconomicInsights: React.FC = () => {
           )}
 
           {/* Explanatory Section */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
               How Economic Indicators Affect Your Salary
             </h2>
 
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="bg-orange-100 p-3 rounded-full flex-shrink-0">
-                  <DollarSign className="w-6 h-6 text-orange-600" />
+                <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full flex-shrink-0">
+                  <DollarSign className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                     Inflation Rate
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     Inflation directly affects your purchasing power and cost of living. 
                     Higher inflation typically leads to salary adjustments and stronger 
                     wage negotiations as employees seek to maintain their real income.
@@ -100,14 +100,14 @@ export const EconomicInsights: React.FC = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="bg-green-100 p-3 rounded-full flex-shrink-0">
-                  <TrendingUp className="w-6 h-6 text-green-600" />
+                <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full flex-shrink-0">
+                  <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                     GDP Growth
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     GDP growth indicates overall economic health. Strong GDP growth often 
                     correlates with business expansion, increased hiring, and better salary 
                     opportunities as companies compete for talent.
@@ -116,14 +116,14 @@ export const EconomicInsights: React.FC = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="bg-red-100 p-3 rounded-full flex-shrink-0">
-                  <Briefcase className="w-6 h-6 text-red-600" />
+                <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full flex-shrink-0">
+                  <Briefcase className="w-6 h-6 text-red-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                     Unemployment Rate
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     Low unemployment strengthens employee bargaining power. When jobs are 
                     plentiful and talent is scarce, employers must offer competitive salaries 
                     to attract and retain employees.

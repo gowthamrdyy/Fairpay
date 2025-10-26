@@ -33,8 +33,8 @@ export const SalaryDistributionChart: React.FC<SalaryDistributionChartProps> = (
   }));
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         Salary Distribution
       </h3>
       <ResponsiveContainer width="100%" height={300}>

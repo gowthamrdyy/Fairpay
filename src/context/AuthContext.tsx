@@ -1,6 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { User } from 'firebase/auth';
-import { authService } from '../services/authService';
+import React, { createContext, useContext, useState } from 'react';
+
+interface User {
+  uid: string;
+  isAnonymous: boolean;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -9,33 +12,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: true,
+  loading: false,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Sign in anonymously on mount
-    const initAuth = async () => {
-      try {
-        await authService.authenticateAnonymously();
-      } catch (error) {
-        console.error('Error initializing auth:', error);
-      }
-    };
-
-    initAuth();
-
-    // Listen to auth state changes
-    const unsubscribe = authService.onAuthStateChange((currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+  // Create a simple local user - no Firebase needed
+  const [user] = useState<User>({
+    uid: 'local-user-' + Date.now(),
+    isAnonymous: true,
+  });
+  const [loading] = useState(false);
 
   return (
     <AuthContext.Provider value={{ user, loading }}>

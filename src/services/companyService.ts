@@ -1,20 +1,32 @@
-import { firestoreService } from './firebase';
 import type { CompanyReview, CompanyStats } from '../types/company';
 import { compareCompanyNames } from '../utils/stringUtils';
+import indiaCompanyReviews from '../data/india_company_reviews.json';
+
+// Local storage for any new reviews added by users
+let localReviews: CompanyReview[] = [];
 
 export const companyService = {
   async addReview(review: Omit<CompanyReview, 'id' | 'createdAt' | 'helpful'>): Promise<void> {
-    const reviewData = {
+    const reviewData: CompanyReview = {
       ...review,
+      id: 'local-' + Date.now(),
       helpful: 0,
       createdAt: new Date(),
     };
-    await firestoreService.addDocument('companyReviews', reviewData);
+    localReviews.push(reviewData);
+    console.log('Review added locally:', reviewData.id);
   },
 
   async getCompanyReviews(companyName: string): Promise<CompanyReview[]> {
     try {
-      const allReviews = await firestoreService.getDocuments('companyReviews');
+      // Combine JSON data with any locally added reviews
+      // Add IDs to JSON data entries
+      const jsonReviews = (indiaCompanyReviews as any[]).map((r, idx) => ({
+        ...r,
+        id: r.id || `json-${idx}`,
+        createdAt: new Date(r.createdAt),
+      }));
+      const allReviews = [...jsonReviews, ...localReviews];
       // Case-insensitive company name matching
       const reviews = allReviews.filter((r: any) => 
         compareCompanyNames(r.companyName, companyName)
@@ -58,11 +70,12 @@ export const companyService = {
 
   async markReviewHelpful(reviewId: string): Promise<void> {
     try {
-      await firestoreService.updateDocument('companyReviews', reviewId, {
-        helpful: (await firestoreService.getDocuments('companyReviews')).find(
-          (r: any) => r.id === reviewId
-        )?.helpful + 1 || 1,
-      });
+      // Find and update in local reviews
+      const review = localReviews.find(r => r.id === reviewId);
+      if (review) {
+        review.helpful = (review.helpful || 0) + 1;
+        console.log('Review marked helpful locally:', reviewId);
+      }
     } catch (error) {
       console.error('Error marking review helpful:', error);
     }
